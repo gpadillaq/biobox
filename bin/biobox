@@ -16,7 +16,7 @@ def message_from(sp)
 end
 
 
-port_str = '/dev/ttyACM1'
+port_str = '/dev/ttyACM0'
 baud_rate = 9600
 data_bits = 8
 stop_bits = 1

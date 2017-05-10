@@ -3,9 +3,7 @@ class DashboardsController < ApplicationController
   end
 
   def input_biobox
-    pdf = Prawn::Document.new
-    pdf.text "Help! I am trapped in a PDF factory!"
-    pdf.autoprint
+    logger.info {"**********************Señal del sensor recibida**********************"}
     render json: params
   end
 end
