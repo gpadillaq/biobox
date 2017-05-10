@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+
+require 'rest-client'
+require 'json'
+require 'serialport'
+require 'rails'
+
+def message_from(sp)
+  if sp.present?
+    message = sp.gets
+    if message.present?
+      message.chomp!
+      {message: message}
+    end
+  end
+end
+
+
+port_str = '/dev/ttyACM1'
+baud_rate = 9600
+data_bits = 8
+stop_bits = 1
+parity = SerialPort::NONE
+url = 'http://localhost:3000/dashboard/input_biobox'
+
+sp = SerialPort.new(port_str, baud_rate, data_bits, stop_bits, parity)
+
+while(true) do
+  message = message_from(sp)
+  if message.present?
+    RestClient.get(url, message)
+  end
+end
