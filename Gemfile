@@ -36,6 +36,7 @@ gem 'rest-client', '~> 2.0', '>= 2.0.2'
 gem 'serialport', '~> 1.3', '>= 1.3.1'
 
 #Gemas para imprimir el documento pdf
+gem 'wkhtmltopdf-binary'
 gem 'wicked_pdf', '~> 1.1'
 
 group :development, :test do

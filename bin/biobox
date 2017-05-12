@@ -28,6 +28,20 @@ sp = SerialPort.new(port_str, baud_rate, data_bits, stop_bits, parity)
 while(true) do
   message = message_from(sp)
   if message.present?
-    RestClient.get(url, message)
+    documento = RestClient.get(url, message)
+
+    puts 'Guardando ticked.pf'
+    file = File.open('tmp/ticked.pdf', 'wb+')
+
+    file << documento
+
+    file.close
+
+    puts 'Imprimiendo El Ticked'
+
+    #%x(lp tmp/ticked.pdf)
+
+    puts %x(ls tmp/ticked.pdf)
+    puts 'Impreción finalizada'
   end
 end
