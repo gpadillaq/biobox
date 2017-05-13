@@ -16,7 +16,7 @@ def message_from(sp)
 end
 
 
-port_str = '/dev/ttyACM0'
+port_str = '/dev/ttyACM1'
 baud_rate = 9600
 data_bits = 8
 stop_bits = 1
@@ -39,9 +39,9 @@ while(true) do
 
     puts 'Imprimiendo El Ticked'
 
-    #%x(lp tmp/ticked.pdf)
+    %x(lp tmp/ticked.pdf)
 
-    puts %x(ls tmp/ticked.pdf)
+    #puts %x(ls tmp/ticked.pdf)
     puts 'Impreción finalizada'
   end
 end

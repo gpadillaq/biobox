@@ -1,0 +1,7 @@
+<%= form_for @ticket do |f| %>
+  Nombre : <%= f.text_field :nombre %><br />
+  Disponibles : <%= f.text_field :disponible %><br />
+  Utilizados : <%= f.number_field :utilizados %><br />
+  Imagen : <%= f.file_field :image %><br />
+  <%= f.submit %>
+<% end %>

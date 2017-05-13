@@ -10,6 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20170513030326) do
+
+  create_table "tickets", force: :cascade do |t|
+    t.string "nombre", null: false
+    t.string "file_path", null: false
+    t.integer "disponible", null: false
+    t.integer "utilizados", default: 0
+  end
 
 end
