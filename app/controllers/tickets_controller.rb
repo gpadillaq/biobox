@@ -1,4 +1,5 @@
 class TicketsController < ApplicationController
+  include TicketConcern
 
   def index
     @tickets = Ticket.all
@@ -35,6 +36,7 @@ class TicketsController < ApplicationController
       @ticket = Ticket.find(params[:id])
       @ticket.attributes = ticket_params
 
+      @ticket.file_path = route_image if image.present?
       @ticket.save!
       redirect_to tickets_path
     rescue StandardError
@@ -44,7 +46,20 @@ class TicketsController < ApplicationController
   end
 
   def destroy
+    begin
+      @ticket = Ticket.find(params[:id])
+      @ticket.destroy
+    rescue StandardError => e
+      flash[:alert] = e.message
+    end
+    redirect_to tickets_path
   end
+
+  def input_biobox
+    logger.info {"**********************Señal del sensor recibida**********************"}
+    send_file @ticket.route, type: 'image/jpeg', disposition: 'inline'
+  end
+
 
   private
 
@@ -53,12 +68,11 @@ class TicketsController < ApplicationController
   end
 
   def route_image
-    name = image.original_filename
-    directory = Rails.root.to_s + '/app/assets/images'
-    directory_db = '/assets'
-    path = File.join(directory, name.tr(' ', '_'))
+    name = [Time.current.to_i, image.original_filename.tr(' ', '_')].join
+    directory = Rails.root.to_s + '/app/views/images'
+    path = File.join(directory, name)
     File.open(path, 'wb') { |f| f.write(image.read) }
-    File.join(directory_db, name.tr(' ', '_'))
+    name
   end
 
   def ticket_params

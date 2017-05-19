@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
-  resources :dashboards do
-    get 'input_biobox'
+  resources :tickets do
+    collection {get 'input_biobox'}
   end
-  resources :tickets
-  root 'dashboards#index'
+  root 'tickets#index'
 end

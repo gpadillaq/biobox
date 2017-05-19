@@ -1,7 +1,30 @@
-<%= form_for @ticket do |f| %>
-  Nombre : <%= f.text_field :nombre %><br />
-  Disponibles : <%= f.text_field :disponible %><br />
-  Utilizados : <%= f.number_field :utilizados %><br />
-  Imagen : <%= f.file_field :image %><br />
-  <%= f.submit %>
-<% end %>
+<div class='container'>
+  <div class="panel panel-info">
+    <div class="panel-heading">Registro de Tickets</div>
+    <div class="panel-body">
+      <%= form_for @ticket, class: 'form-horizontal' do |f| %>
+        <div class='form-group'>
+          <label for="nombre">Nombre:</label>
+          <%= f.text_field :nombre, class: 'form-control'%>
+        </div>
+        <div class='form-group'>
+          <label for="disponible">Disponibles:</label>
+          <%= f.number_field :disponible, class: 'form-control' %>
+        </div>
+        <div class='form-group'>
+          <label for="utilizados">Utilizados:</label>
+          <%= f.number_field :utilizados, class: 'form-control' %>
+        </div>
+
+        <% if @ticket.new_record? %>
+          <div class='form-group'>
+            <label for="image">Ticket:</label>
+            <%= f.file_field :image, class: 'form-control' %>
+          </div>
+        <% end %>
+
+        <%= f.submit 'Guardar', class: 'btn btn-primary'%>
+      <% end %>
+    </div>
+  </div>
+</div>

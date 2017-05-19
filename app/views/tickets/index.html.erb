@@ -1,36 +1,42 @@
 <div class=container>
-  <div class='header'>
-    <div class='title'>
-      Tickets
+  <% flash.each do |name, msg| %>
+    <% unless name.to_sym == :timedout %>
+      <div class="alert alert-<%=name%>">
+        <strong><%= name %></strong> <%= msg %>
+      </div>
+    <% end %>
+  <% end %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class='row'>
+        <div class='col-sm-10'><label>Lista de Tickets </label></div>
+        <div class='col-sm-2'><%= link_to 'Crear Tickets', new_ticket_path, class: 'btn btn-success'%></div>
+      </div>
     </div>
-    <div class='scopes'>
-      <%= link_to 'Crear Tickets', new_ticket_path %>
+    <div class="panel-body">
+      <table class='table'>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Tickets Disponible</th>
+            <th>Tickets Utilizados</th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @tickets.each do |ticket| %>
+            <tr>
+              <td><%= ticket.nombre %></td>
+              <td><%= ticket.disponible %></td>
+              <td><%= ticket.utilizados %></td>
+              <td></td>
+              <td><%= link_to 'Editar', edit_ticket_path(ticket)%></td>
+              <td><%= link_to 'Eliminar', ticket_path(ticket), data: {confirm: '¿Está seguro de que quiere eliminar esto?'}, method: :delete %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     </div>
-  </div>
-
-
-  <div class='main'>
-   <table>
-     <thead>
-       <tr>
-         <th>Nombre</th>
-         <th>Tickets Disponible</th>
-         <th>Tickets Utilizados</th>
-         <th></th>
-       </tr>
-     </thead>
-
-     <tbody>
-       <% @tickets.each do |ticket| %>
-         <tr>
-           <td><%= ticket.nombre %></td>
-           <td><%= ticket.disponible %></td>
-           <td><%= ticket.utilizados %></td>
-           <td></td>
-           <td><%= link_to 'Editar', edit_ticket_path(ticket)%></td>
-         </tr>
-       <% end %>
-     </tbody>
-   </table>
   </div>
 </div>
