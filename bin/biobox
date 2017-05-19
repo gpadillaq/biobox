@@ -4,6 +4,7 @@ require 'rest-client'
 require 'json'
 require 'serialport'
 require 'rails'
+require 'os'
 
 def message_from(sp)
   if sp.present?
@@ -15,14 +16,26 @@ def message_from(sp)
   end
 end
 
+def sistema_operativo
+  if OS.linux?
+    '/dev/ttyACM*'
+  elsif OS.mac?
+    '/dev/tty.usbmodem*'
+  end
+end
 
-port_str = '/dev/ttyACM1'
+def puerto
+  Dir.glob(sistema_operativo).first
+end
+
+port_str = puerto
 baud_rate = 9600
 data_bits = 8
 stop_bits = 1
 parity = SerialPort::NONE
-url = 'http://localhost:3000/dashboard/input_biobox'
+url = 'http://localhost:3000/tickets/input_biobox'
 
+puts "Creando conección al puerto #{port_str}"
 sp = SerialPort.new(port_str, baud_rate, data_bits, stop_bits, parity)
 
 while(true) do
@@ -30,8 +43,8 @@ while(true) do
   if message.present?
     documento = RestClient.get(url, message)
 
-    puts 'Guardando ticked.pf'
-    file = File.open('tmp/ticked.pdf', 'wb+')
+    puts 'Guardando tickets'
+    file = File.open('tmp/ticket', 'wb+')
 
     file << documento
 
@@ -39,9 +52,9 @@ while(true) do
 
     puts 'Imprimiendo El Ticked'
 
-    %x(lp tmp/ticked.pdf)
+    #%x(lp tmp/ticked)
 
-    #puts %x(ls tmp/ticked.pdf)
+    puts %x(ls tmp/ticket)
     puts 'Impreción finalizada'
   end
 end
